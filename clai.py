@@ -1,7 +1,7 @@
 import subprocess
 import os
 from agent import Agent
-from CLI import CLI
+from cli import CLI
 
 num_retries = 10
 

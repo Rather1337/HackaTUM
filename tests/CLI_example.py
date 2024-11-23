@@ -1,5 +1,5 @@
 import subprocess
-from CLI import CLI
+from cli import CLI
 
 # #### sending a single command
 # p = subprocess.run('ls', shell=True, check=True, capture_output=True, encoding='utf-8')

@@ -1,0 +1,24 @@
+Crazyflie Attitude Control Interface Setup
+Ask Adam Heins or SiQi Zhou for access to the utiasDSL github organization.		
+
+This guide has been tested with Python version 3.8.10
+
+The Windows Subsystem for Linux (WSL) is not supported. You must install Ubuntu either directly on the computer (recommended) or in a VM.
+
+If you are using conda, make sure to exit out of all conda environments (even base) by using the following command in all new terminals:
+$ conda deactivate
+Or modify your ~/.bashrc script to include the following lines:
+$ # deactivate conda's base environment
+$ conda deactivate
+
+Export your repository folder before continue
+$ cd ~/{your repositories folder}
+$ pwd 
+$ export REPO_FOLDER=<pwd result from last step>
+
+$ cd $REPO_FOLDER
+$ git clone -b dsl-sim2real git@github.com:utiasDSL/crazyswarm-import.git
+$ cd crazyswarm-import
+$ git checkout attitude-control-identified-xz
+$ git submodule update --init --recursive
+$ export CSW_PYTHON=python3
