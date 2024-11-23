@@ -12,12 +12,38 @@ print(f'Command \"{p.args}\" exited with returncode {p.returncode}, output: \n{p
 
 
 #### multiple commands after one another
-p = subprocess.Popen("bash", shell=True, text=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
 commands = ["pwd", "ls", "cd test", "mkdir test_nacheinander", "ls", "sudo pip install numpy"]
 
-for cmd in commands:
-    p.stdin.write(cmd+"\n")
-    p.stdin.flush()
-    # p.wait()
-    print(p.stdout.readline())
+# with subprocess.Popen("/bin/bash", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) as shell:
+with subprocess.Popen("/bin/bash", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True) as shell:
+    for idx, command in enumerate(commands):
+        print(f"\nExecuting command {idx + 1}: {command}")
+        # Send command to the shell
+        shell.stdin.write(command + "\n")
+        shell.stdin.flush()
+
+        # Wait for the command to finish and capture its output
+        shell.stdin.write("echo $? > /tmp/last_exit_code\n")
+        #shell.stdin.flush()
+        shell.stdin.write("cat /tmp/last_exit_code\n")
+        shell.stdin.flush()
+
+        # Read command output until EOF (or next prompt)
+        stdout_lines = []
+        stderr_lines = []
+        while True:
+            line = shell.stdout.readline()
+            stdout_lines.append(line)
+            # line_err = shell.stderr.readline()
+            # stderr_lines.append(str(line_err))
+
+            
+            # print(shell.stdout,shell.stderr)
+            if line.startswith("0") or line.startswith("1") or line== (''):
+                break
+
+            
+        print("". join(stdout_lines))
+        # print("". join(stderr_lines))
+        
