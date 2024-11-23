@@ -1,4 +1,5 @@
 import subprocess
+from CLI import CLI
 
 #### sending a single command
 p = subprocess.run('ls', shell=True, check=True, capture_output=True, encoding='utf-8')
@@ -47,3 +48,6 @@ with subprocess.Popen("/bin/bash", shell=True, stdin=subprocess.PIPE, stdout=sub
         print("". join(stdout_lines))
         # print("". join(stderr_lines))
         
+
+cli = CLI()
+print(cli.execute("ls"))
