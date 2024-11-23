@@ -62,7 +62,7 @@ class Agent:
 
         self.inital_cmd = True
 
-    def get_next_cmd(self):
+    def get_next_cmd(self, response: str):
         if self.inital_cmd:
             self.inital_cmd = False
             return self.llm.app.invoke(
@@ -81,7 +81,7 @@ class Agent:
                 {
                     "messages": [
                         HumanMessage(
-                            content="The previous command executed without problems. From the tutorial, what is the next command to execute? Return it as single string and nothing else. If you are done executing all commands that are necessary to complete the tutorial, return 'done'."
+                            content=f"The previous command executed without problems, the response was: '{response}'. From the tutorial, what is the next command to execute? Return it as single string and nothing else. If you are done executing all commands that are necessary to complete the tutorial, return 'done'."
                         )
                     ]
                 },
@@ -93,7 +93,7 @@ class Agent:
             {
                 "messages": [
                     HumanMessage(
-                        content=f"The previous command failed with the following error: {error_msg}. Give me a new command based on the error message. Return it as single string and nothing else."
+                        content=f"The previous command failed with the following error: {error_msg}. Try again to execute the command, but give me a new command based on the error message. Return it as single string and nothing else."
                     )
                 ]
             },

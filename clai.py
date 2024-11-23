@@ -7,32 +7,37 @@ num_retries = 10
 
 def main():
 
-    with open("doc.txt", "r") as file:
+    cli = CLI()
+
+    path = input("Enter path to the document: ")
+
+    with open(f"{path}", "r") as file:
         doc_content = file.read() # TODO make with launch args and more versatile, add cases e.g. URL or pdf etc.
 
     agent = Agent(doc_content)
-    cli = CLI()
+    
+    cli.print_start()
 
     last_failed = False
 
     response = ["", ""]
     while(True):
         if not last_failed:
-            cmd = agent.get_next_cmd()
+            cmd = agent.get_next_cmd(response[0])
         else:
             cmd = agent.retry_cmd(response[0])
             last_failed = False
 
-        print(cmd)
+        cmd = cmd.strip('"')
 
         if cmd == 'done':
             break
         else:
             response = cli.execute(cmd)
-            print(response)
             if response[-1] != 0:
                 last_failed = True
 
+    cli.print_end()
     return 0
 
 if __name__ == "__main__":
