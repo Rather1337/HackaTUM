@@ -53,12 +53,11 @@ class Agent:
             {
                 "messages": [
                     HumanMessage(
-                        content="I have this tutorial of my onboarding process:"
+                        content=f"I have this tutorial of my onboarding process: {doc_content}"
                     )
                 ]
             },
-            config={"configurable": {"thread_id": 42}},
-            input=doc_content,
+            config={"configurable": {"thread_id": 42}}
         )
 
         self.inital_cmd = True
