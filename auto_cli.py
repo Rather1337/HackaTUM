@@ -1,6 +1,7 @@
 import subprocess
 import os
 from agent import Agent
+from CLI import CLI
 
 num_retries = 10
 
@@ -95,17 +96,17 @@ def run_procedure(commands: list[str]) -> bool:
                 return False
 
 
+
 def main():
-    # Open the API-key in read mode
-    with open("api_key.txt", "r", encoding="utf-8") as file:
-        api_key = file.read()
-    os.environ[api_key]
 
     with open("doc.txt", "r") as file:
         doc_content = file.read() # TODO make with launch args and more versatile, add cases e.g. URL or pdf etc.
 
     agent = Agent(doc_content)
+    cli = CLI()
+
     last_failed = False
+
     response = ["", ""]
     while(True):
         if not last_failed:
@@ -114,11 +115,12 @@ def main():
             cmd = agent.retry_cmd(response[0])
             last_failed = False
 
+        print(cmd)
+
         if cmd == 'done':
             break
         else:
-            # response = cli(cmd) TODO
-            response = ["message, 0"] # placeholder
+            response = cli.execute(cmd)
             if response[-1] != 0:
                 last_failed = True
 
@@ -129,12 +131,7 @@ def main():
     #   run_command(command) -> str (response)
     #   LLM.response(response) -> bool (done) # send response to LLM and get if done
     #   if done: break
-
-    commands = documentation_to_list(doc_content)
-
-    if run_procedure(commands):
-        print("Succesfully completed procedure.")
-    else:
-        print(f"Procedure failed after {num_retries} retries.")
-
     return 0
+
+if __name__ == "__main__":
+    main()
