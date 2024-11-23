@@ -36,7 +36,7 @@ class CLI():
     def _reformat(self, msg:list):
         messages = msg[:-1]
         messages = "; ".join(messages)
-        return(messages, int(msg[-1]))
+        return(messages, int(msg[-1][0]))
     
     def print_end(self):
         self.console.print("All instructions were [bold green]successfully executed[/bold green].\nGoodbye! I hope you found this helpful.", style="white")
