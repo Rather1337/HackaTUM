@@ -53,7 +53,7 @@ class Agent:
             {
                 "messages": [
                     HumanMessage(
-                        content=f"I have this tutorial of my onboarding process: {doc_content}"
+                        content=f"I have this tutorial of my onboarding process: {doc_content}. Do not answer this message. Just read it and wait for the next message."
                     )
                 ]
             },
