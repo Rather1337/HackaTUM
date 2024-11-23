@@ -5,14 +5,22 @@ from cli import CLI
 
 num_retries = 10
 
+def fetch_document():
+    while(True):
+        try:
+            path = input("Enter path to the document: ")
+
+            with open(f"{path}", "r") as file:
+                doc_content = file.read() # TODO make with launch args and more versatile, add cases e.g. URL or pdf etc.
+            return doc_content
+        except:
+            print("No such file or directory")
+
 def main():
 
     cli = CLI()
 
-    path = input("Enter path to the document: ")
-
-    with open(f"{path}", "r") as file:
-        doc_content = file.read() # TODO make with launch args and more versatile, add cases e.g. URL or pdf etc.
+    doc_content = fetch_document()
 
     agent = Agent(doc_content)
     
