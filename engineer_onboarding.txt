@@ -1,0 +1,14 @@
+Crazyflie Attitude Control Interface Setup
+
+This guide has been tested with Python version 3.8.10
+
+The Windows Subsystem for Linux (WSL) is not supported. You must install Ubuntu either directly on the computer (recommended) or in a VM.
+
+Export your repository folder before continue
+$ ~/repos
+$ pwd
+$ export REPO_FOLDER=~/repos
+
+Crazyflie firmware
+$ cd $REPO_FOLDER
+$ git clone git@github.com:bitcraze/crazyflie-firmwrae.git
