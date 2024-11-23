@@ -1,7 +1,8 @@
 import subprocess
+import os
+from agent import Agent
 
 num_retries = 10
-
 
 def documentation_to_list(doc: str) -> list[str]:
     """Runs inference on a large text of documentation and returns a list of commands that are needed to complete the procedure.
@@ -95,8 +96,39 @@ def run_procedure(commands: list[str]) -> bool:
 
 
 def main():
+    # Open the API-key in read mode
+    with open("api_key.txt", "r", encoding="utf-8") as file:
+        api_key = file.read()
+    os.environ[api_key]
+
     with open("doc.txt", "r") as file:
-        doc_content = file.read()
+        doc_content = file.read() # TODO make with launch args and more versatile, add cases e.g. URL or pdf etc.
+
+    agent = Agent(doc_content)
+    last_failed = False
+    response = ["", ""]
+    while(True):
+        if not last_failed:
+            cmd = agent.get_next_cmd()
+        else:
+            cmd = agent.retry_cmd(response[0])
+            last_failed = False
+
+        if cmd == 'done':
+            break
+        else:
+            # response = cli(cmd) TODO
+            response = ["message, 0"] # placeholder
+            if response[-1] != 0:
+                last_failed = True
+
+    # LLM wrapper object init 
+    # Add tutorial from file to LLM
+    # Loop:
+    #   LLM.get_next_cmd() -> str (command) # ask LLM for next command to execute
+    #   run_command(command) -> str (response)
+    #   LLM.response(response) -> bool (done) # send response to LLM and get if done
+    #   if done: break
 
     commands = documentation_to_list(doc_content)
 
